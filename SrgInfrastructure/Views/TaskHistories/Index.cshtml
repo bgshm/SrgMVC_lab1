@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SrgDomain.Model.TaskHistory>
+@{
+    ViewData["Title"] = "Task Histories";
+}
+<h2>Task Histories</h2>
+<p>
+    <a asp-action="Create">Create New Task History</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>@Html.DisplayNameFor(model => model.First().Action)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Timestamp)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var history in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Tasks" asp-action="Details" asp-route-id="@history.TaskId">
+                        Task @history.TaskId
+                    </a>
+                </td>
+                <td>@Html.DisplayFor(m => history.Action)</td>
+                <td>@history.Timestamp.ToString("g")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@history.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@history.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@history.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

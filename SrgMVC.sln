@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SrgDomain", "SrgDomain\SrgDomain.csproj", "{98089C1A-2262-4D0F-ABAC-CEDAAC50C594}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SrgInfrastructure", "SrgInfrastructure\SrgInfrastructure.csproj", "{B025ACBF-0536-417F-A555-4230AB037BA4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98089C1A-2262-4D0F-ABAC-CEDAAC50C594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98089C1A-2262-4D0F-ABAC-CEDAAC50C594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98089C1A-2262-4D0F-ABAC-CEDAAC50C594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98089C1A-2262-4D0F-ABAC-CEDAAC50C594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B025ACBF-0536-417F-A555-4230AB037BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B025ACBF-0536-417F-A555-4230AB037BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B025ACBF-0536-417F-A555-4230AB037BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B025ACBF-0536-417F-A555-4230AB037BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

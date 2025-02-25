@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SrgDomain.Model.Task>
+@{
+    ViewData["Title"] = "Tasks";
+}
+<h2>Tasks</h2>
+<p>
+    <a asp-action="Create">Create New Task</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().Title)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Status)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Deadline)</th>
+            <th>Manager</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m => task.Title)</td>
+                <td>@Html.DisplayFor(m => task.Status)</td>
+                <td>@(task.Deadline.HasValue ? task.Deadline.Value.ToString("g") : "")</td>
+                <td>
+                    <a asp-controller="Managers" asp-action="Details" asp-route-id="@task.Manager.Id">
+                        @task.Manager.Name
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@task.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@task.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@task.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

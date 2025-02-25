@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SrgDomain.Model.Department>
+@{
+    ViewData["Title"] = "Departments";
+}
+<h2>Departments</h2>
+<p>
+    <a asp-action="Create">Create New Department</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().DepartmentName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+            <th>@Html.DisplayNameFor(model => model.First().ContactEmail)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CreatedDate)</th>
+            <th>Manager</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.DepartmentName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContactEmail)</td>
+                <td>@item.CreatedDate.ToString("g")</td>
+                <td>
+                    @if (item.Manager != null)
+                    {
+                        <a asp-controller="Managers" asp-action="Details" asp-route-id="@item.Manager.Id">View Manager</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Managers" asp-action="Create" asp-route-departmentId="@item.Id">Add Manager</a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

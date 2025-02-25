@@ -1,0 +1,20 @@
+﻿@model SrgDomain.Model.TaskHistory
+@{
+    ViewData["Title"] = "Create Task History";
+    int taskId = (int)ViewBag.TaskId;
+}
+<h2>Create Task History</h2>
+<form asp-action="Create">
+    <input type="hidden" name="TaskId" value="@taskId" />
+    <div class="form-group">
+        <label asp-for="Action" class="control-label"></label>
+        <input asp-for="Action" class="form-control" />
+        <span asp-validation-for="Action" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+<div>
+    <a asp-controller="Tasks" asp-action="Details" asp-route-id="@taskId">Back to Task</a>
+</div>
