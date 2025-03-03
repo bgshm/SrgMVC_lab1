@@ -1,10 +1,10 @@
 ﻿@model SrgDomain.Model.Task
 @{
-    ViewData["Title"] = "Task Details";
+    ViewData["Title"] = "Дані завдання";
 }
-<h2>Task Details</h2>
+<h2>Дані завдання</h2>
 <div>
-    <h4>Task</h4>
+    <h4>Завдання</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Title)</dt>
@@ -22,14 +22,14 @@
     </dl>
 </div>
 <div>
-    <h4>Task History</h4>
+    <h4>Історія завдання</h4>
     @if (Model.TaskHistories.Any())
     {
         <table class="table">
             <thead>
                 <tr>
-                    <th>Action</th>
-                    <th>Timestamp</th>
+                    <th>Дія</th>
+                    <th>Час</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,10 +45,10 @@
     }
     else
     {
-        <p>No history available.</p>
+        <p>Немає доступної історії.</p>
     }
 </div>
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Back to Manager</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
+    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Назад до менеджера</a>
 </p>

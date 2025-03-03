@@ -19,6 +19,13 @@ namespace SrgInfrastructure.Controllers
             _context = context;
         }
 
+        // GET: Members
+        public async Task<IActionResult> Index()
+        {
+            var srgDatabaseContext = _context.Members.Include(t => t.Manager);
+            return View(await srgDatabaseContext.ToListAsync());
+        }
+
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,10 +53,10 @@ namespace SrgInfrastructure.Controllers
         {
             member.Manager = _context.Managers.FirstOrDefault(m => m.Id == member.ManagerId);
             member.ManagerId = _context.Managers.FirstOrDefault(m => m.Id == member.ManagerId).Id;
-
             _context.Add(member);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Managers", new { id = member.ManagerId });         
+            return RedirectToAction("Details", "Managers", new { id = member.ManagerId });
+            
         }
 
         // GET: Members/Edit/5

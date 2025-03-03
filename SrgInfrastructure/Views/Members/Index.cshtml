@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<SrgDomain.Model.Member>
 @{
-    ViewData["Title"] = "Members";
+    ViewData["Title"] = "Учасники";
 }
-<h2>Members</h2>
+<h2>Учасники</h2>
 <p>
-    <a asp-action="Create">Create New Member</a>
+    <a asp-action="Create">Додати нового учасника</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.First().Name)</th>
             <th>@Html.DisplayNameFor(model => model.First().Role)</th>
-            <th>Manager</th>
-            <th>Actions</th>
+            <th>Менеджер</th>
+            <th>Дії</th>
         </tr>
     </thead>
     <tbody>
@@ -27,9 +27,9 @@
                     </a>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@member.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@member.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@member.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@member.Id">Дані</a> |
+                    <a asp-action="Edit" asp-route-id="@member.Id">Редагувати</a> |
+                    <a asp-action="Delete" asp-route-id="@member.Id">Видалити</a>
                 </td>
             </tr>
         }

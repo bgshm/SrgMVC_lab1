@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<SrgDomain.Model.Task>
 @{
-    ViewData["Title"] = "Tasks";
+    ViewData["Title"] = "Завдання";
 }
-<h2>Tasks</h2>
+<h2>Завдання</h2>
 <p>
-    <a asp-action="Create">Create New Task</a>
+    <a asp-action="Create">Створити нове завдання</a>
 </p>
 <table class="table">
     <thead>
@@ -12,8 +12,8 @@
             <th>@Html.DisplayNameFor(model => model.First().Title)</th>
             <th>@Html.DisplayNameFor(model => model.First().Status)</th>
             <th>@Html.DisplayNameFor(model => model.First().Deadline)</th>
-            <th>Manager</th>
-            <th>Actions</th>
+            <th>Менеджер</th>
+            <th>Дії</th>
         </tr>
     </thead>
     <tbody>
@@ -29,9 +29,9 @@
                     </a>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@task.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@task.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@task.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@task.Id">Дані</a> |
+                    <a asp-action="Edit" asp-route-id="@task.Id">Редагувати</a> |
+                    <a asp-action="Delete" asp-route-id="@task.Id">Видалити</a>
                 </td>
             </tr>
         }

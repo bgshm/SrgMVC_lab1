@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.ComponentModel.DataAnnotations;
 namespace SrgDomain.Model;
 
 public partial class Manager : Entity
 {
     public int DepartmentId { get; set; }
-
+    [Required(ErrorMessage = "Ім'я обов'язкове")]
+    [Display(Name = "Ім'я")]
     public string Name { get; set; } = null!;
-
     public virtual Department Department { get; set; } = null!;
 
     public virtual ICollection<Member> Members { get; set; } = new List<Member>();

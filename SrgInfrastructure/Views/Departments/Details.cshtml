@@ -1,10 +1,10 @@
 ﻿@model SrgDomain.Model.Department
 @{
-    ViewData["Title"] = "Department Details";
+    ViewData["Title"] = "Дані департаменту";
 }
-<h2>Department Details</h2>
+<h2>Дані департаменту</h2>
 <div>
-    <h4>Department</h4>
+    <h4>Департамент</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DepartmentName)</dt>
@@ -21,16 +21,16 @@
     @if (Model.Manager != null)
     {
         <p>
-            <strong>Manager:</strong>
+            <strong>Менеджер:</strong>
             <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.Manager.Id">@Model.Manager.Name</a>
         </p>
     }
     else
     {
-        <p>No Manager assigned. <a asp-controller="Managers" asp-action="Create" asp-route-departmentId="@Model.Id">Add Manager</a></p>
+        <p>No Manager assigned. <a asp-controller="Managers" asp-action="Create" asp-route-departmentId="@Model.Id">Додати менеджера</a></p>
     }
 </div>
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
+    <a asp-action="Index">Назад до головної</a>
 </p>

@@ -1,15 +1,15 @@
 ﻿@model SrgDomain.Model.Manager
 @{
-    ViewData["Title"] = "Manager Details";
+    ViewData["Title"] = "Дані менеджера";
 }
-<h2>Manager Details</h2>
+<h2>Дані менеджера</h2>
 <div>
-    <h4>Manager</h4>
+    <h4>Менеджер</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
-        <dt class="col-sm-2">Department</dt>
+        <dt class="col-sm-2">Департамент</dt>
         <dd class="col-sm-10">
             <a asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">
                 @Model.Department.DepartmentName
@@ -18,14 +18,14 @@
     </dl>
 </div>
 <div>
-    <h4>Members</h4>
-    <p><a asp-controller="Members" asp-action="Create" asp-route-managerId="@Model.Id">Add Member</a></p>
+    <h4>Учасники</h4>
+    <p><a asp-controller="Members" asp-action="Create" asp-route-managerId="@Model.Id">Додати учасника</a></p>
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Actions</th>
+                <th>Ім'я</th>
+                <th>Роль</th>
+                <th>Дії</th>
             </tr>
         </thead>
         <tbody>
@@ -35,9 +35,9 @@
                     <td>@member.Name</td>
                     <td>@member.Role</td>
                     <td>
-                        <a asp-controller="Members" asp-action="Details" asp-route-id="@member.Id">Details</a> |
-                        <a asp-controller="Members" asp-action="Edit" asp-route-id="@member.Id">Edit</a> |
-                        <a asp-controller="Members" asp-action="Delete" asp-route-id="@member.Id">Delete</a>
+                        <a asp-controller="Members" asp-action="Details" asp-route-id="@member.Id">Дані</a> |
+                        <a asp-controller="Members" asp-action="Edit" asp-route-id="@member.Id">Редагувати</a> |
+                        <a asp-controller="Members" asp-action="Delete" asp-route-id="@member.Id">Видалити</a>
                     </td>
                 </tr>
             }
@@ -45,15 +45,15 @@
     </table>
 </div>
 <div>
-    <h4>Tasks</h4>
-    <p><a asp-controller="Tasks" asp-action="Create" asp-route-managerId="@Model.Id">Add Task</a></p>
+    <h4>Завдання</h4>
+    <p><a asp-controller="Tasks" asp-action="Create" asp-route-managerId="@Model.Id">Додати завдання</a></p>
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Deadline</th>
-                <th>Actions</th>
+                <th>Назва</th>
+                <th>Статус</th>
+                <th>Дедайн</th>
+                <th>Дії</th>
             </tr>
         </thead>
         <tbody>
@@ -64,9 +64,9 @@
                     <td>@task.Status</td>
                     <td>@(task.Deadline.HasValue ? task.Deadline.Value.ToString("g") : "")</td>
                     <td>
-                        <a asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Details</a> |
-                        <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.Id">Edit</a> |
-                        <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@task.Id">Delete</a>
+                        <a asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Дані</a> |
+                        <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.Id">Редагувати</a> |
+                        <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@task.Id">Видалити</a>
                     </td>
                 </tr>
             }
@@ -74,7 +74,7 @@
     </table>
 </div>
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
-    <a asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">Back to Department</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
+    <a asp-action="Delete" asp-route-id="@Model.Id">Видалити</a> |
+    <a asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">Назад до департаменту</a>
 </p>

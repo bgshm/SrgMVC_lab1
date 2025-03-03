@@ -1,8 +1,8 @@
 ﻿@model SrgDomain.Model.Member
 @{
-    ViewData["Title"] = "Edit Member";
+    ViewData["Title"] = "Редагувати учасника";
 }
-<h2>Edit Member</h2>
+<h2>Редагувати учасника</h2>
 <form asp-action="Edit">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="ManagerId" />
@@ -33,5 +33,5 @@
     </div>
 </form>
 <div>
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Back to Manager</a>
+    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Назад до менеджера</a>
 </div>

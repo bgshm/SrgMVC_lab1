@@ -1,9 +1,9 @@
 ﻿@model SrgDomain.Model.Manager
 @{
-    ViewData["Title"] = "Create Manager";
+    ViewData["Title"] = "Призначити менеджера";
     int departmentId = (int)ViewBag.DepartmentId;
 }
-<h2>Create Manager</h2>
+<h2>Призначити менеджера</h2>
 <form asp-action="Create">
     <input type="hidden" name="DepartmentId" value="@departmentId" />
     <div class="form-group">
@@ -12,9 +12,9 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Створити" class="btn btn-primary" />
     </div>
 </form>
 <div>
-    <a asp-controller="Departments" asp-action="Details" asp-route-id="@departmentId">Back to Department</a>
+    <a asp-controller="Departments" asp-action="Details" asp-route-id="@departmentId">Назад до департаменту</a>
 </div>

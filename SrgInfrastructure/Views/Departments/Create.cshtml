@@ -1,9 +1,10 @@
 ﻿@model SrgDomain.Model.Department
 @{
-    ViewData["Title"] = "Create Department";
+    ViewData["Title"] = "Створити департамент";
 }
-<h2>Create Department</h2>
+<h2>Створити департамент</h2>
 <form asp-action="Create">
+    <input type="hidden" asp-for="CreatedDate" value="@DateTime.Now" />
     <div class="form-group">
         <label asp-for="DepartmentName" class="control-label"></label>
         <input asp-for="DepartmentName" class="form-control" />
@@ -18,13 +19,9 @@
         <input asp-for="ContactEmail" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="CreatedDate" class="control-label"></label>
-        <input asp-for="CreatedDate" class="form-control" type="datetime" />
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Створити" class="btn btn-primary" />
     </div>
 </form>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад до головної</a>
 </div>

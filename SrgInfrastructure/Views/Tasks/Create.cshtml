@@ -1,9 +1,9 @@
 ﻿@model SrgDomain.Model.Task
 @{
-    ViewData["Title"] = "Create Task";
+    ViewData["Title"] = "Створити завдання";
     int managerId = (int)ViewBag.ManagerId;
 }
-<h2>Create Task</h2>
+<h2>Створити завдання</h2>
 <form asp-action="Create">
     <input type="hidden" name="ManagerId" value="@managerId" />
     <div class="form-group">
@@ -20,14 +20,9 @@
         <input asp-for="Deadline" class="form-control" type="datetime" />
     </div>
     <div class="form-group">
-        <label asp-for="Status" class="control-label"></label>
-        <input asp-for="Status" class="form-control" />
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" value="Створити" class="btn btn-primary" />
     </div>
 </form>
 <div>
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@managerId">Back to Manager</a>
+    <a asp-controller="Managers" asp-action="Details" asp-route-id="@managerId">Назад до менеджера</a>
 </div>

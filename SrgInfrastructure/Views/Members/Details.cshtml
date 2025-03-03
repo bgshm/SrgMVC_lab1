@@ -1,28 +1,27 @@
 ﻿@model SrgDomain.Model.Member
 @{
-    ViewData["Title"] = "Member Details";
+    ViewData["Title"] = "Дані учасника";
 }
-<h2>Member Details</h2>
+<h2>Дані учасника</h2>
 <div>
-    <h4>Member</h4>
+    <h4>Учасник</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Role)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Role)</dd>
-        <dt class="col-sm-2">Tasks Per Month</dt>
+        <dt class="col-sm-2">Виконані завдання за місяць</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.TasksPerMonth)</dd>
-        <dt class="col-sm-2">Tasks Total</dt>
+        <dt class="col-sm-2">Виконані завдання за весь час</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.TasksTotal)</dd>
-        <dt class="col-sm-2">Last Task Date</dt>
+        <dt class="col-sm-2">Дата останнього виконаного завдання</dt>
         <dd class="col-sm-10">
             @(Model.LastTaskDate.HasValue ? Model.LastTaskDate.Value.ToString("g") : "")
         </dd>
     </dl>
 </div>
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a> |
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.Manager.Id">Back to Manager</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
+    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.Manager.Id">Назад до менеджера</a>
 </p>
