@@ -11,6 +11,8 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.First().Name)</th>
             <th>@Html.DisplayNameFor(model => model.First().Role)</th>
+            <th>@Html.DisplayNameFor(model => model.First().TasksPerMonth)</th>
+            <th>@Html.DisplayNameFor(model => model.First().TasksTotal)</th>
             <th>Менеджер</th>
             <th>Дії</th>
         </tr>
@@ -21,6 +23,8 @@
             <tr>
                 <td>@Html.DisplayFor(m => member.Name)</td>
                 <td>@Html.DisplayFor(m => member.Role)</td>
+                <td>@Html.DisplayFor(m => member.TasksPerMonth)</td>
+                <td>@Html.DisplayFor(m => member.TasksTotal)</td>
                 <td>
                     <a asp-controller="Managers" asp-action="Details" asp-route-id="@member.Manager.Id">
                         @member.Manager.Name
@@ -35,3 +39,97 @@
         }
     </tbody>
 </table>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>Виконані завдання за місяцями (по учасниках)</h4>
+        <div id="tasksPerMonthChart"></div>
+    </div>
+    <div class="col-md-6">
+        <h4>Загальна кількість виконаних завдань</h4>
+        <div id="tasksTotalChart"></div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawTasksPerMonthChart();
+            drawTasksTotalChart();
+        }
+         
+            fetch('/api/charts/tasksPerMonthByMember')
+                .then(response => response.json())
+                .then(rawData => {
+                    let monthsSet = new Set();
+                    rawData.forEach(item => monthsSet.add(item.month));
+                    let months = Array.from(monthsSet).sort((a, b) => a - b);
+
+                    let memberSet = new Set();
+                    rawData.forEach(item => memberSet.add(item.memberName));
+                    let members = Array.from(memberSet);
+
+                    let dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Місяць');
+                    members.forEach(member => {
+                        dataTable.addColumn('number', member);
+                    });
+
+                    const monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"];
+
+                    let rows = months.map(month => {
+                        let row = [monthNames[month - 1]];
+                        members.forEach(member => {
+                            let record = rawData.find(item => item.month === month && item.memberName === member);
+                            row.push(record ? record.tasksPerMonth : 0);
+                        });
+                        return row;
+                    });
+                    dataTable.addRows(rows);
+
+                    const options = {
+                        title: 'Виконані завдання за місяцями (по учасниках)',
+                        width: '100%',
+                        height: 400,
+                        legend: { position: 'top', maxLines: 3 },
+                        isStacked: false,
+                        hAxis: { title: 'Місяць' },
+                        vAxis: { title: 'Кількість завдань' }
+                    };
+
+                    const chart = new google.visualization.ColumnChart(document.getElementById('tasksPerMonthChart'));
+                    chart.draw(dataTable, options);
+                });
+        }
+
+        function drawTasksTotalChart() {
+            fetch('/api/charts/tasksTotal')
+                .then(response => response.json())
+                .then(data => {
+                    const dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Учасник');
+                    dataTable.addColumn('number', 'Завдання');
+
+                    data.forEach(item => {
+                        dataTable.addRow([item.memberName, item.count]);
+                    });
+
+                    const options = {
+                        title: 'Загальна кількість виконаних завдань',
+                        width: '100%',
+                        height: 400,
+                        pieHole: 0.4,
+                        legend: { position: 'right' }
+                    };
+
+                    const chart = new google.visualization.PieChart(document.getElementById('tasksTotalChart'));
+                    chart.draw(dataTable, options);
+                });
+        }
+    </script>
+}
