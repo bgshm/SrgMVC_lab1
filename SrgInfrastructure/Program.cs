@@ -10,7 +10,6 @@ builder.Services.AddDbContext<SrgDatabaseContext>(option => option.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,9 +21,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
+app.UseStaticFiles();
 
 app.UseAuthorization();
+
+app.UseRouting();
 
 app.MapStaticAssets();
 
@@ -32,6 +33,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Departments}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

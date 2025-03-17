@@ -110,7 +110,7 @@ namespace SrgInfrastructure.Controllers
             var history = await _context.TaskHistories.FindAsync(id);
             if (history != null)
             {
-                int taskId = history.TaskId;
+                int? taskId = history.TaskId;
                 _context.TaskHistories.Remove(history);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Tasks", new { id = taskId });

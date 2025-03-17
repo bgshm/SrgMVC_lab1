@@ -6,7 +6,7 @@ namespace SrgDomain.Model;
 
 public partial class TaskHistory : Entity
 {
-    public int TaskId { get; set; }
+    public int? TaskId { get; set; }
     [Display(Name = "Дія")]
     public string Action { get; set; } = null!;
     [Display(Name = "Час")]

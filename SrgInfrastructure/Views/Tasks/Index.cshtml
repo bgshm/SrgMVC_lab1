@@ -31,7 +31,20 @@
                 <td>
                     <a asp-action="Details" asp-route-id="@task.Id">Дані</a> |
                     <a asp-action="Edit" asp-route-id="@task.Id">Редагувати</a> |
-                    <a asp-action="Delete" asp-route-id="@task.Id">Видалити</a>
+                    <a asp-action="Delete" asp-route-id="@task.Id">Видалити</a> |
+                    @if (!string.Equals(task.Status, "Completed", StringComparison.OrdinalIgnoreCase))
+                    {
+                        using (Html.BeginForm("MarkAsCompleted", "Tasks", new { id = task.Id }, FormMethod.Post, false, new { @class = "d-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Mark as Completed" class="btn btn-sm btn-success" />
+                        }
+
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-secondary" disabled>Completed</button>
+                    }
                 </td>
             </tr>
         }

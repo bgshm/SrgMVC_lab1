@@ -22,6 +22,12 @@
     </dl>
 </div>
 <p>
+    <a asp-action="Tasks" asp-route-id="@Model.Id" class="btn btn-info">
+        View All Assigned Tasks
+    </a>
+</p>
+
+<p>
     <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
     <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.Manager.Id">Назад до менеджера</a>
 </p>

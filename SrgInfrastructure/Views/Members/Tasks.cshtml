@@ -1,0 +1,41 @@
+﻿@model SrgDomain.Model.Member
+@{
+    ViewData["Title"] = "Tasks for " + Model.Name;
+}
+
+<h2>Tasks for @Model.Name</h2>
+
+@if (Model.Tasks == null || !Model.Tasks.Any())
+{
+    <p>No tasks assigned to this member.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Task Title</th>
+                <th>Status</th>
+                <th>Manager</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model.Tasks)
+            {
+                <tr>
+                    <td>@task.Title</td>
+                    <td>@task.Status</td>
+                    <td>@(task.Manager != null ? task.Manager.Name : "N/A")</td>
+                    <td>
+                        <a asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<p>
+    <a asp-action="Details" asp-route-id="@Model.Id">Back to Member Details</a>
+</p>

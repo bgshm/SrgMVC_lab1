@@ -26,6 +26,28 @@ namespace SrgInfrastructure.Controllers
             return View(await srgDatabaseContext.ToListAsync());
         }
 
+        public async Task<IActionResult> Tasks(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            // Load the member along with their assigned tasks.
+            var member = await _context.Members
+                .Include(m => m.Tasks)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            member.Manager = _context.Managers.FirstOrDefault(m => m.Id == member.ManagerId);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+
+            // Pass the member and their tasks to the view.
+            return View(member);
+        }
+
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
         {

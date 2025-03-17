@@ -104,11 +104,11 @@ public partial class SrgDatabaseContext : DbContext
                     "TaskExecutor",
                     r => r.HasOne<Member>().WithMany()
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_TaskExecutors_Members"),
                     l => l.HasOne<SrgDomain.Model.Task>().WithMany()
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_TaskExecutors_Tasks"),
                     j =>
                     {
@@ -134,7 +134,7 @@ public partial class SrgDatabaseContext : DbContext
 
             entity.HasOne(d => d.Task).WithMany(p => p.TaskHistories)
                 .HasForeignKey(d => d.TaskId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__TaskHisto__TaskI__03F0984C");
         });
 

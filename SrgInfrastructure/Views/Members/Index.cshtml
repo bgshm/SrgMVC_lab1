@@ -62,7 +62,8 @@
             drawTasksPerMonthChart();
             drawTasksTotalChart();
         }
-         
+
+        function drawTasksPerMonthChart() {
             fetch('/api/charts/tasksPerMonthByMember')
                 .then(response => response.json())
                 .then(rawData => {
@@ -104,6 +105,9 @@
 
                     const chart = new google.visualization.ColumnChart(document.getElementById('tasksPerMonthChart'));
                     chart.draw(dataTable, options);
+                })
+                .catch(error => {
+                    console.error("Error drawing tasks per month chart:", error);
                 });
         }
 
@@ -129,7 +133,11 @@
 
                     const chart = new google.visualization.PieChart(document.getElementById('tasksTotalChart'));
                     chart.draw(dataTable, options);
+                })
+                .catch(error => {
+                    console.error("Error drawing tasks total chart:", error);
                 });
         }
     </script>
 }
+
