@@ -13,7 +13,11 @@ public partial class Department : Entity
     [Required(ErrorMessage = "Пошта обов'язкова")]
     [Display(Name = "Контактна пошта")]
     public string? ContactEmail { get; set; }
+
     [Display(Name = "Дата створення")]
     public DateTime CreatedDate { get; set; }
+
+    [Display(Name = "Фото департаменту")]
+    public string? PhotoPath { get; set; }
     public virtual Manager? Manager { get; set; }
 }

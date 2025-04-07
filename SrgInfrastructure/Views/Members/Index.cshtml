@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<SrgDomain.Model.Member>
 @{
     ViewData["Title"] = "Учасники";
+    var mgrId = ViewBag.ManagerId as int?;
 }
 <h2>Учасники</h2>
-<p>
-    <a asp-action="Create">Додати нового учасника</a>
-</p>
+@* <p>
+    @if (mgrId.HasValue && User.IsInRole("Manager") || User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Додати нового учасника</a>
+    }
+</p> *@
 <table class="table">
     <thead>
         <tr>
+            <th>Фото</th>
             <th>@Html.DisplayNameFor(model => model.First().Name)</th>
             <th>@Html.DisplayNameFor(model => model.First().Role)</th>
             <th>@Html.DisplayNameFor(model => model.First().TasksPerMonth)</th>
@@ -21,6 +26,16 @@
         @foreach (var member in Model)
         {
             <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(member.PhotoPath))
+                    {
+                        <img src="@member.PhotoPath" alt="@member.Name" class="img-thumbnail" style="max-width:100px;" />
+                    }
+                    else
+                    {
+                        <img src="/img/default-member.jpg" alt="No image" class="img-thumbnail" style="max-width:100px;" />
+                    }
+                </td>
                 <td>@Html.DisplayFor(m => member.Name)</td>
                 <td>@Html.DisplayFor(m => member.Role)</td>
                 <td>@Html.DisplayFor(m => member.TasksPerMonth)</td>
@@ -31,9 +46,14 @@
                     </a>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@member.Id">Дані</a> |
-                    <a asp-action="Edit" asp-route-id="@member.Id">Редагувати</a> |
-                    <a asp-action="Delete" asp-route-id="@member.Id">Видалити</a>
+                    <div class="d-flex">
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@member.Id">Редагувати</a>
+                            <a class="btn btn-primary me-2" asp-action="Delete" asp-route-id="@member.Id">Видалити</a>
+                        }
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@member.Id">Дані</a>
+                    </div>
                 </td>
             </tr>
         }
@@ -140,4 +160,3 @@
         }
     </script>
 }
-

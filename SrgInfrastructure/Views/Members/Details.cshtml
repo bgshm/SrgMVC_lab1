@@ -3,9 +3,20 @@
     ViewData["Title"] = "Дані учасника";
 }
 <h2>Дані учасника</h2>
+
 <div>
     <h4>Учасник</h4>
     <hr />
+    <div class="mb-3">
+        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+        {
+            <img src="@Model.PhotoPath" alt="@Model.Name" class="img-thumbnail" style="max-width:200px;" />
+        }
+        else
+        {
+            <img src="/img/default-member.jpg" alt="No image available" class="img-thumbnail" style="max-width:200px;" />
+        }
+    </div>
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
@@ -23,11 +34,13 @@
 </div>
 <p>
     <a asp-action="Tasks" asp-route-id="@Model.Id" class="btn btn-info">
-        View All Assigned Tasks
+        Переглянути усі призначені завдання
     </a>
 </p>
-
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.Manager.Id">Назад до менеджера</a>
+    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a>
+    }
+    <a class="btn btn-primary" asp-controller="Managers" asp-action="Details" asp-route-id="@Model.Manager.Id">Назад до менеджера</a>
 </p>

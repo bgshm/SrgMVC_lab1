@@ -23,7 +23,7 @@
 </div>
 <p>
     <a asp-action="AttachedMembers" asp-route-id="@Model.Id" class="btn btn-info">
-        View All Assigned Members
+        Подивитися усіх призначених учасників
     </a>
 </p>
 
@@ -55,6 +55,6 @@
     }
 </div>
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Назад до менеджера</a>
+    <a class ="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a>
+    <a class="btn btn-primary" asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Назад до менеджера</a>
 </p>

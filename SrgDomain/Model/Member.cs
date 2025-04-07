@@ -18,6 +18,9 @@ public partial class Member : Entity
     [Display(Name = "Дата останнього виконаного завдання")]
     public DateTime? LastTaskDate { get; set; }
 
+    [Display(Name = "Фото учасника")]
+    public string? PhotoPath { get; set; }
+
     public virtual Manager Manager { get; set; } = null!;
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();

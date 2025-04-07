@@ -4,7 +4,7 @@
     int managerId = (int)ViewBag.ManagerId;
 }
 <h2>Створити учасника</h2>
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
     <input type="hidden" name="ManagerId" value="@managerId" />
     <input type="hidden" name="TasksPerMonth" value="0" />
     <input type="hidden" name="TasksTotal" value="0" />
@@ -19,9 +19,13 @@
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>
     <div class="form-group">
+        <label>Фото учасника</label>
+        <input type="file" name="PhotoFile" class="form-control" />
+    </div>
+    <div class="form-group">
         <input type="submit" value="Створити" class="btn btn-primary" />
     </div>
 </form>
 <div>
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@managerId">Назад до менеджера</a>
+    <a class="btn btn-primary" asp-controller="Managers" asp-action="Details" asp-route-id="@managerId">Назад до менеджера</a>
 </div>

@@ -2,45 +2,63 @@
 @{
     ViewData["Title"] = "Департаменти";
 }
+
 <h2>Департаменти</h2>
 <p>
-    <a asp-action="Create">Створити новий департамент</a>
+    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Створити новий департамент</a>
+    }
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.First().DepartmentName)</th>
-            <th>@Html.DisplayNameFor(model => model.First().Description)</th>
-            <th>@Html.DisplayNameFor(model => model.First().ContactEmail)</th>
-            <th>@Html.DisplayNameFor(model => model.First().CreatedDate)</th>
-            <th>Менеджер</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.DepartmentName)</td>
-                <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                <td>@Html.DisplayFor(modelItem => item.ContactEmail)</td>
-                <td>@item.CreatedDate.ToString("g")</td>
-                <td>
-                    @if (item.Manager != null)
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                @* Optional: display a photo if available *@
+                @if (!string.IsNullOrEmpty(item.PhotoPath))
+                {
+                    <img class="card-img-top" src="@item.PhotoPath" alt="@item.DepartmentName" style="height:200px; object-fit:cover;" />
+                }
+                else
+                {
+                    <img class="card-img-top" src="/img/default-department.jpg" alt="No image" style="height:200px; object-fit:cover;" />
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@item.DepartmentName</h5>
+                    <p class="card-text">
+                        <strong>Опис:</strong> @item.Description <br />
+                        <strong>Контактний email:</strong> @item.ContactEmail <br />
+                        <strong>Дата створення:</strong> @item.CreatedDate.ToString("g")
+                    </p>
+                    <p>
+                        <strong>Менеджер:</strong>
+                        @if (item.Manager != null)
+                        {
+                            <a class="btn btn-link p-0" asp-controller="Managers" asp-action="Details" asp-route-id="@item.Manager.Id">
+                                @item.Manager.Name
+                            </a>
+                        }
+                        else
+                        {
+                            @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-primary btn-sm" asp-controller="Managers" asp-action="Create" asp-route-departmentId="@item.Id">Додати менеджера</a>
+                            }
+                        }
+                    </p>
+                </div>
+                <div class="card-footer d-flex flex-nowrap">
+                    <a class="btn btn-primary me-2" asp-action="Details" asp-route-id="@item.Id">Дані</a>
+                    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
                     {
-                        <a asp-controller="Managers" asp-action="Details" asp-route-id="@item.Manager.Id">Подивитися менеджера</a>
+                        <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@item.Id">Редагувати</a>
+                        <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
                     }
-                    else
-                    {
-                        <a asp-controller="Managers" asp-action="Create" asp-route-departmentId="@item.Id">Додати менеджера</a>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Дані</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

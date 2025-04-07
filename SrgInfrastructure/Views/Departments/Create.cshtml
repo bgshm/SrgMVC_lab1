@@ -3,7 +3,7 @@
     ViewData["Title"] = "Створити департамент";
 }
 <h2>Створити департамент</h2>
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
     <input type="hidden" asp-for="CreatedDate" value="@DateTime.Now" />
     <div class="form-group">
         <label asp-for="DepartmentName" class="control-label"></label>
@@ -19,9 +19,13 @@
         <input asp-for="ContactEmail" class="form-control" />
     </div>
     <div class="form-group">
+        <label>Фото департаменту</label>
+        <input type="file" name="PhotoFile" class="form-control" />
+    </div>
+    <div class="form-group">
         <input type="submit" value="Створити" class="btn btn-primary" />
     </div>
 </form>
 <div>
-    <a asp-action="Index">Назад до головної</a>
+    <a class="btn btn-primary" asp-action="Index">Назад до головної</a>
 </div>

@@ -3,7 +3,13 @@
     ViewData["Title"] = "Редагувати менеджера";
 }
 <h2>Редагувати менеджера</h2>
-<form asp-action="Edit">
+@if (Model.PhotoPath != null)
+{
+    <div class="mb-3">
+        <img src="@Model.PhotoPath" alt="Фото менеджера" style="max-width:200px;" />
+    </div>
+}
+<form asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="DepartmentId" />
     <div class="form-group">
@@ -12,9 +18,13 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="form-group">
+        <label>Завантажити нове фото</label>
+        <input type="file" name="PhotoFile" class="form-control" />
+    </div>
+    <div class="form-group">
         <input type="submit" value="Зберегти" class="btn btn-primary" />
     </div>
 </form>
 <div>
-    <a asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">Back to Department</a>
+    <a class="btn btn-primary" asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">Назад до департаменту</a>
 </div>

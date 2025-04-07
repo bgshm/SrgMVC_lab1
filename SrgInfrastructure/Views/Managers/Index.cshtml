@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<SrgDomain.Model.Manager>
 @{
     ViewData["Title"] = "Менеджери";
+    var deptId = ViewBag.DepartmentId as int?;
 }
 <h2>Менеджери</h2>
-<p>
-    <a asp-action="Create">Призначити нового менеджера</a>
-</p>
+@* <p>
+    @if (deptId.HasValue && User.IsInRole("Manager") || User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Призначити нового менеджера</a>
+    }
+</p> *@
 <table class="table">
     <thead>
         <tr>
+            <th>Фото</th>
             <th>@Html.DisplayNameFor(model => model.First().Name)</th>
             <th>Департамент</th>
             <th>Дії</th>
@@ -18,6 +23,16 @@
         @foreach (var manager in Model)
         {
             <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(manager.PhotoPath))
+                    {
+                        <img src="@manager.PhotoPath" alt="@manager.Name" class="img-thumbnail" style="max-width:100px;" />
+                    }
+                    else
+                    {
+                        <img src="/img/default-manager.jpg" alt="No image" class="img-thumbnail" style="max-width:100px;" />
+                    }
+                </td>
                 <td>@Html.DisplayFor(m => manager.Name)</td>
                 <td>
                     <a asp-controller="Departments" asp-action="Details" asp-route-id="@manager.Department.Id">
@@ -25,9 +40,14 @@
                     </a>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@manager.Id">Дані</a> |
-                    <a asp-action="Edit" asp-route-id="@manager.Id">Редагувати</a> |
-                    <a asp-action="Delete" asp-route-id="@manager.Id">Видалити</a>
+                    <div class="d-flex">
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-primary me-2" asp-action="Delete" asp-route-id="@manager.Id">Видалити</a>
+                            <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@manager.Id">Редагувати</a>
+                        }
+                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@manager.Id">Дані</a>
+                    </div>
                 </td>
             </tr>
         }

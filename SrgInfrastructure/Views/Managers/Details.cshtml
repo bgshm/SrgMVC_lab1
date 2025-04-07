@@ -6,6 +6,16 @@
 <div>
     <h4>Менеджер</h4>
     <hr />
+    <div class="mb-3">
+        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+        {
+            <img src="@Model.PhotoPath" alt="@Model.Name" class="img-thumbnail" style="max-width:200px;" />
+        }
+        else
+        {
+            <img src="/img/default-manager.jpg" alt="No image" class="img-thumbnail" style="max-width:200px;" />
+        }
+    </div>
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
@@ -19,10 +29,18 @@
 </div>
 <div>
     <h4>Учасники</h4>
-    <p><a asp-controller="Members" asp-action="Create" asp-route-managerId="@Model.Id">Додати учасника</a></p>
+    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+    {
+        <p>
+            <a class="btn btn-primary" asp-controller="Members" asp-action="Create" asp-route-managerId="@Model.Id">
+                Додати учасника
+            </a>
+        </p>
+    }
     <table class="table">
         <thead>
             <tr>
+                <th>Фото</th>
                 <th>Ім'я</th>
                 <th>Роль</th>
                 <th>Дії</th>
@@ -32,12 +50,27 @@
             @foreach (var member in Model.Members)
             {
                 <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(member.PhotoPath))
+                        {
+                            <img src="@member.PhotoPath" alt="@member.Name" class="img-thumbnail" style="max-width:100px;" />
+                        }
+                        else
+                        {
+                            <img src="/img/default-member.jpg" alt="No image" class="img-thumbnail" style="max-width:100px;" />
+                        }
+                    </td>
                     <td>@member.Name</td>
                     <td>@member.Role</td>
                     <td>
-                        <a asp-controller="Members" asp-action="Details" asp-route-id="@member.Id">Дані</a> |
-                        <a asp-controller="Members" asp-action="Edit" asp-route-id="@member.Id">Редагувати</a> |
-                        <a asp-controller="Members" asp-action="Delete" asp-route-id="@member.Id">Видалити</a>
+                        <div class="d-flex">
+                            <a class="btn btn-primary me-2" asp-controller="Members" asp-action="Details" asp-route-id="@member.Id">Дані</a>
+                            @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-primary me-2" asp-controller="Members" asp-action="Edit" asp-route-id="@member.Id">Редагувати</a>
+                                <a class="btn btn-primary" asp-controller="Members" asp-action="Delete" asp-route-id="@member.Id">Видалити</a>
+                            }
+                        </div>
                     </td>
                 </tr>
             }
@@ -46,7 +79,12 @@
 </div>
 <div>
     <h4>Завдання</h4>
-    <p><a asp-controller="Tasks" asp-action="Create" asp-route-managerId="@Model.Id">Додати завдання</a></p>
+    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+    {
+        <p>
+            <a class="btn btn-primary" asp-controller="Tasks" asp-action="Create" asp-route-managerId="@Model.Id">Додати завдання</a>
+        </p>
+    }
     <table class="table">
         <thead>
             <tr>
@@ -64,9 +102,14 @@
                     <td>@task.Status</td>
                     <td>@(task.Deadline.HasValue ? task.Deadline.Value.ToString("g") : "")</td>
                     <td>
-                        <a asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Дані</a> |
-                        <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.Id">Редагувати</a> |
-                        <a asp-controller="Tasks" asp-action="Delete" asp-route-id="@task.Id">Видалити</a>
+                        <div class="d-flex">
+                            <a class="btn btn-primary me-2" asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Дані</a>
+                            @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-primary me-2" asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.Id">Редагувати</a>
+                                <a class="btn btn-primary" asp-controller="Tasks" asp-action="Delete" asp-route-id="@task.Id">Видалити</a>
+                            }
+                        </div>
                     </td>
                 </tr>
             }
@@ -74,7 +117,12 @@
     </table>
 </div>
 <p>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
-    <a asp-action="Delete" asp-route-id="@Model.Id">Видалити</a> |
-    <a asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">Назад до департаменту</a>
+    <div class="d-flex">
+        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a>
+            <a class="btn btn-primary me-2" asp-action="Delete" asp-route-id="@Model.Id">Видалити</a>
+        }
+        <a class="btn btn-primary" asp-controller="Departments" asp-action="Details" asp-route-id="@Model.Department.Id">Назад до департаменту</a>
+    </div>
 </p>

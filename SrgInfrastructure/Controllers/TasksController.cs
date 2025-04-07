@@ -1,30 +1,46 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SrgDomain.Model;
-using SrgInfrastructure;
+using System.Security.Claims;
 
 namespace SrgInfrastructure.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private readonly SrgDatabaseContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TasksController(SrgDatabaseContext context)
+        public TasksController(SrgDatabaseContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: Tasks
+        // GET: Tasks – filter tasks by the department (via the manager).
+        [Authorize(Roles = "Member,Manager,Admin")]
         public async Task<IActionResult> Index()
         {
-            var srgDatabaseContext = _context.Tasks.Include(t => t.Manager);
-            return View(await srgDatabaseContext.ToListAsync());
+            IQueryable<SrgDomain.Model.Task> query = _context.Tasks.Include(t => t.Manager);
+            if (User.IsInRole("Member") || User.IsInRole("Manager"))
+            {
+                var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                if (user != null && user.DepartmentId.HasValue)
+                {
+                    query = query.Where(t => t.Manager.DepartmentId == user.DepartmentId.Value);
+                }
+                else
+                {
+                    query = query.Where(t => false);
+                }
+            }
+            return View(await query.ToListAsync());
         }
 
-        // GET: Tasks/AttachedMembers/5
+        // GET: Tasks/AttachedMembers/5 – all roles.
+        [Authorize(Roles = "Member,Manager,Admin")]
         public async Task<IActionResult> AttachedMembers(int? id)
         {
             if (id == null) return NotFound();
@@ -38,21 +54,37 @@ namespace SrgInfrastructure.Controllers
             return View(task);
         }
 
-        // GET: Tasks/Details/5
+        // GET: Tasks/Details/5 – filter similarly.
+        [Authorize(Roles = "Member,Manager,Admin")]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+                return NotFound();
 
-            var task = await _context.Tasks
+            IQueryable<SrgDomain.Model.Task> query = _context.Tasks
                 .Include(t => t.Manager)
-                .Include(t => t.TaskHistories)
-                .FirstOrDefaultAsync(t => t.Id == id);
-            if (task == null) return NotFound();
+                .Include(t => t.TaskHistories);
+            if (User.IsInRole("Member") || User.IsInRole("Manager"))
+            {
+                var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                if (user != null && user.DepartmentId.HasValue)
+                {
+                    query = query.Where(t => t.Manager.DepartmentId == user.DepartmentId.Value);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            var task = await query.FirstOrDefaultAsync(t => t.Id == id);
+            if (task == null)
+                return NotFound();
 
             return View(task);
         }
 
-        // GET: Tasks/Create?managerId=5
+        // GET: Tasks/Create?managerId=5 – only Managers and Admins.
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult Create(int managerId)
         {
             ViewBag.ManagerId = managerId;
@@ -60,9 +92,10 @@ namespace SrgInfrastructure.Controllers
             return View();
         }
 
-        // POST: Tasks/Create
+        // POST: Tasks/Create – only Managers and Admins.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Create(SrgDomain.Model.Task task, int[] SelectedMemberIds)
         {
             // Associate the task with its manager.
@@ -84,13 +117,18 @@ namespace SrgInfrastructure.Controllers
             _context.Add(task);
             await _context.SaveChangesAsync();
 
+            var managerName = "Адміністратор";
+            if (!User.IsInRole("Admin"))
+                managerName = task.Manager?.Name;
+
             // Log history entry for task creation.
-            await LogTaskHistory(task.Id, $"Task {task.Title} was created");
+            await LogTaskHistory(task.Id, $"Завдання {task.Title} було створено користувачем {managerName}");
 
             return RedirectToAction("Details", "Managers", new { id = task.ManagerId });
         }
 
-        // GET: Tasks/Edit/5
+        // GET: Tasks/Edit/5 – only Managers and Admins.
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -101,9 +139,10 @@ namespace SrgInfrastructure.Controllers
             return View(task);
         }
 
-        // POST: Tasks/Edit/5
+        // POST: Tasks/Edit/5 – only Managers and Admins.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Edit(int id, SrgDomain.Model.Task task)
         {
             if (id != task.Id) return NotFound();
@@ -112,13 +151,17 @@ namespace SrgInfrastructure.Controllers
             _context.Update(task);
             await _context.SaveChangesAsync();
 
+            var managerName = "Адміністратор";
+            if (!User.IsInRole("Admin"))
+                managerName = task.Manager?.Name;
             // Log history entry for task modification.
-            await LogTaskHistory(task.Id, $"Task {task.Title} was changed");
+            await LogTaskHistory(task.Id, $"Завдання {task.Title} було змінено користувачем {managerName}");
 
             return RedirectToAction("Details", "Managers", new { id = task.ManagerId });
         }
 
-        // GET: Tasks/Delete/5
+        // GET: Tasks/Delete/5 – only Managers and Admins.
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -131,16 +174,20 @@ namespace SrgInfrastructure.Controllers
             return View(task);
         }
 
-        // POST: Tasks/Delete/5
+        // POST: Tasks/Delete/5 – only Managers and Admins.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
             if (task != null)
             {
+                var managerName = "Адміністратор";
+                if (!User.IsInRole("Admin"))
+                    managerName = task.Manager?.Name;
                 // Log the deletion event before removing the task.
-                await LogTaskHistory(task.Id, $"Task \"{task.Title}\" was deleted");
+                await LogTaskHistory(task.Id, $"Завдання \"{task.Title}\" було видалено користувачем {managerName}");
 
                 int managerId = task.ManagerId;
                 _context.Tasks.Remove(task);
@@ -150,10 +197,10 @@ namespace SrgInfrastructure.Controllers
             return RedirectToAction("Index", "Managers");
         }
 
-
-        // POST: Tasks/MarkAsCompleted/5
+        // POST: Tasks/MarkAsCompleted/5 – only Managers and Admins.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> MarkAsCompleted(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
@@ -165,8 +212,11 @@ namespace SrgInfrastructure.Controllers
                 _context.Update(task);
                 await _context.SaveChangesAsync();
 
+                var managerName = "Адміністратор";
+                if (!User.IsInRole("Admin"))
+                    managerName = task.Manager?.Name;
                 // Log history entry for marking task as completed.
-                await LogTaskHistory(task.Id, $"Task {task.Title} was marked as Completed");
+                await LogTaskHistory(task.Id, $"Завдання {task.Title} було позначено як виконане користувачем {managerName}");
             }
             return RedirectToAction(nameof(Index));
         }

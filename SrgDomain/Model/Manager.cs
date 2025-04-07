@@ -7,6 +7,9 @@ public partial class Manager : Entity
     [Required(ErrorMessage = "Ім'я обов'язкове")]
     [Display(Name = "Ім'я")]
     public string Name { get; set; } = null!;
+
+    [Display(Name = "Фото менеджера")]
+    public string? PhotoPath { get; set; }
     public virtual Department Department { get; set; } = null!;
 
     public virtual ICollection<Member> Members { get; set; } = new List<Member>();

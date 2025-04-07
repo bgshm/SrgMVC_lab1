@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SrgInfrastructure.ViewModels.AdminUserViewModel>
+@using Microsoft.AspNetCore.Mvc.Rendering;
+@{
+    ViewData["Title"] = "Administration";
+    var departments = ViewBag.Departments as List<SelectListItem>;
+    var availableRoles = ViewBag.AvailableRoles as List<SelectListItem>;
+}
+
+<h2>Адміністрування</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Пошта</th>
+            <th>Поточна роль</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.CurrentRole</td>
+                <td>
+                    <!-- The entire update form is contained in this single cell -->
+                    <form asp-action="UpdateUser" method="post">
+                        <input type="hidden" name="Id" value="@user.Id" />
+                        <div class="form-group">
+                            <label>Змінити роль:</label>
+                            <select name="SelectedRole" class="form-control">
+                                @foreach (var role in availableRoles)
+                                {
+                                    <option value="@role.Value" selected="@(role.Value == user.SelectedRole ? "selected" : null)">
+                                        @role.Text
+                                    </option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Департамент:</label>
+                            <select name="DepartmentId" class="form-control">
+                                <option value="">-- Виберіть департамент --</option>
+                                @foreach (var dept in departments)
+                                {
+                                    <option value="@dept.Value" selected="@(user.DepartmentId?.ToString() == dept.Value ? "selected" : null)">
+                                        @dept.Text
+                                    </option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary btn-sm">Оновити</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

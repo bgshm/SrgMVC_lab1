@@ -1,34 +1,59 @@
 ﻿@model SrgDomain.Model.Task
 @{
     ViewData["Title"] = "Редагувати завдання";
+
+    // Round 'now' up to the next 10-minute mark
+    var now = DateTime.Now;
+    int nextStep = ((now.Minute + 9) / 10) * 10;
+    if (nextStep == 60)
+    {
+        now = now.AddHours(1);
+        nextStep = 0;
+    }
+    var minDt = new DateTime(now.Year, now.Month, now.Day, now.Hour, nextStep, 0);
+    string minDateTime = minDt.ToString("yyyy-MM-ddTHH:mm");
 }
 <h2>Редагувати завдання</h2>
-<form asp-action="Edit">
+
+<form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="ManagerId" />
     <input type="hidden" asp-for="CreationDate" />
+
     <div class="form-group">
         <label asp-for="Title" class="control-label"></label>
         <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Description" class="control-label"></label>
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
+
     <div class="form-group">
         <label asp-for="Deadline" class="control-label"></label>
-        <input asp-for="Deadline" class="form-control" type="datetime" />
+        <input asp-for="Deadline"
+               type="datetime-local"
+               class="form-control"
+               step="600"
+               min="@minDateTime" />
+        <span asp-validation-for="Deadline" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Status" class="control-label"></label>
         <input asp-for="Status" class="form-control" />
         <span asp-validation-for="Status" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mt-3">
         <input type="submit" value="Зберегти" class="btn btn-primary" />
     </div>
 </form>
-<div>
-    <a asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">Назад до менеджера</a>
+
+<div class="mt-3">
+    <a class="btn btn-secondary" asp-controller="Managers" asp-action="Details" asp-route-id="@Model.ManagerId">
+        Назад до менеджера
+    </a>
 </div>

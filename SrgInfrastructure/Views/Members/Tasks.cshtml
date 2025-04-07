@@ -1,23 +1,23 @@
 ﻿@model SrgDomain.Model.Member
 @{
-    ViewData["Title"] = "Tasks for " + Model.Name;
+    ViewData["Title"] = "Завдання " + Model.Name;
 }
 
-<h2>Tasks for @Model.Name</h2>
+<h2>Завдання @Model.Name</h2>
 
 @if (Model.Tasks == null || !Model.Tasks.Any())
 {
-    <p>No tasks assigned to this member.</p>
+    <p>Жодного завдання не призначено цьому учаснику.</p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Task Title</th>
-                <th>Status</th>
-                <th>Manager</th>
-                <th>Actions</th>
+                <th>Назва завдання</th>
+                <th>Статус</th>
+                <th>Менеджер</th>
+                <th>Дії</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +28,7 @@ else
                     <td>@task.Status</td>
                     <td>@(task.Manager != null ? task.Manager.Name : "N/A")</td>
                     <td>
-                        <a asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Details</a>
+                        <a class="btn btn-primary" asp-controller="Tasks" asp-action="Details" asp-route-id="@task.Id">Дані</a>
                     </td>
                 </tr>
             }
@@ -37,5 +37,5 @@ else
 }
 
 <p>
-    <a asp-action="Details" asp-route-id="@Model.Id">Back to Member Details</a>
+    <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Id">Повернутися до даних учасника</a>
 </p>
