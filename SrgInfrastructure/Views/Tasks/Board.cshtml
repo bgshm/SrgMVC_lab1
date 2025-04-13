@@ -1,0 +1,77 @@
+﻿@model TaskBoardViewModel
+@{
+    ViewData["Title"] = "Таблиця завдань";
+}
+
+<h2>Таблиця завдань</h2>
+
+<div class="row">
+    @* TO DO *@
+    <div class="col-md-4">
+        <h4 class="text-success">TO DO</h4>
+        @foreach (var t in Model.ToDo)
+        {
+            <div class="card mb-3 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">@t.Title</h5>
+                    <p class="card-text">Менеджер: @t.Manager.Name</p>
+                    <p class="card-text"><small>Дедлайн: @t.Deadline?.ToString("g")</small></p>
+                    <div class="d-flex">
+                        <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-sm btn-outline-success me-2">
+                            Дані
+                        </a>
+
+                        <form asp-action="MarkAsCompleted" asp-route-id="@t.Id" method="post" class="m-0 p-0">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-success">
+                                Позначити виконаним
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* COMPLETED *@
+    <div class="col-md-4">
+        <h4 class="text-secondary">COMPLETED</h4>
+        @foreach (var t in Model.Completed)
+        {
+            <div class="card mb-3 bg-light text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">@t.Title</h5>
+                    <p class="card-text">Менеджер: @t.Manager.Name</p>
+                    <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-sm btn-outline-secondary">Дані</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* OVERDUE *@
+    <div class="col-md-4">
+        <h4 class="text-danger">OVERDUE</h4>
+        @foreach (var t in Model.Overdue)
+        {
+            <div class="card mb-3 border-danger">
+                <div class="card-body">
+                    <h5 class="card-title">@t.Title</h5>
+                    <p class="card-text">Менеджер: @t.Manager.Name</p>
+                    <p class="card-text"><small>Дедлайн був: @t.Deadline?.ToString("g")</small></p>
+                    <div class="d-flex">
+                        <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-sm btn-outline-danger me-2">
+                            Дані
+                        </a>
+
+                        <form asp-action="MarkAsCompleted" asp-route-id="@t.Id" method="post" class="m-0 p-0">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Позначити виконаним
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

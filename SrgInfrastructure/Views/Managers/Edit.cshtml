@@ -6,7 +6,14 @@
 @if (Model.PhotoPath != null)
 {
     <div class="mb-3">
-        <img src="@Model.PhotoPath" alt="Фото менеджера" style="max-width:200px;" />
+        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+        {
+            <img class="card-img-top" src="@Model.PhotoPath" alt="@Model.Name" style="max-width:200px;" />
+        }
+        else
+        {
+            <img class="card-img-top" src="/img/default-manager.jpg" alt="No image" style="max-width:200px;" />
+        }
     </div>
 }
 <form asp-action="Edit" enctype="multipart/form-data">

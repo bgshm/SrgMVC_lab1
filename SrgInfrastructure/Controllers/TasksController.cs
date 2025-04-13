@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SrgDomain.Model;
+using SrgInfrastructure.Models;
 using System.Security.Claims;
 
 namespace SrgInfrastructure.Controllers
@@ -53,6 +54,29 @@ namespace SrgInfrastructure.Controllers
 
             return View(task);
         }
+
+        [Authorize(Roles = "Member,Manager,Admin")]
+        public async Task<IActionResult> Board()
+        {
+            // Load all tasks with their Manager
+            var tasks = await _context.Tasks
+                .Include(t => t.Manager)
+                .ToListAsync();
+
+            // Partition into three lists
+            var toDo = tasks.Where(t => t.Status == "In Progress").ToList();
+            var completed = tasks.Where(t => t.Status == "Completed").ToList();
+            var overdue = tasks.Where(t => t.Status.Contains("overdue")).ToList();
+
+            var vm = new TaskBoardViewModel
+            {
+                ToDo = toDo,
+                Completed = completed,
+                Overdue = overdue
+            };
+            return View(vm);
+        }
+
 
         // GET: Tasks/Details/5 – filter similarly.
         [Authorize(Roles = "Member,Manager,Admin")]
@@ -218,7 +242,7 @@ namespace SrgInfrastructure.Controllers
                 // Log history entry for marking task as completed.
                 await LogTaskHistory(task.Id, $"Завдання {task.Title} було позначено як виконане користувачем {managerName}");
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Board));
         }
 
         // Helper method to log task history.

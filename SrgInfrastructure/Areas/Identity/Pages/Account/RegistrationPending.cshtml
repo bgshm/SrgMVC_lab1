@@ -1,0 +1,18 @@
+﻿@page
+@model SrgInfrastructure.Areas.Identity.Pages.Account.RegistrationPendingModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Дякуємо, що зареєструвалися";
+}
+
+<div class="container mt-5">
+  <div class="alert alert-info text-center">
+    <h4>Дякуємо за реєстрацію!</h4>
+    <p>Ваш обліковий запис очікує на схвалення адміністратора. Ви отримаєте сповіщення, як тільки він буде активований.</p>
+  </div>
+  <p class="text-center">
+    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">
+      Повернутися до логіну
+    </a>
+  </p>
+</div>
