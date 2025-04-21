@@ -153,6 +153,8 @@ namespace SrgInfrastructure.Controllers
             // 2) Update scalar fields
             memToUpdate.Name = member.Name;
             memToUpdate.Role = member.Role;
+            memToUpdate.EnrollmentYear = member.EnrollmentYear;
+            memToUpdate.StructuralUnit = member.StructuralUnit;
             memToUpdate.ManagerId = member.ManagerId;
             memToUpdate.TasksPerMonth = member.TasksPerMonth;
             memToUpdate.TasksTotal = member.TasksTotal;

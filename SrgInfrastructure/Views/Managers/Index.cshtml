@@ -4,17 +4,14 @@
     var deptId = ViewBag.DepartmentId as int?;
 }
 <h2>Менеджери</h2>
-@* <p>
-    @if (deptId.HasValue && User.IsInRole("Manager") || User.IsInRole("Admin"))
-    {
-        <a class="btn btn-primary" asp-action="Create">Призначити нового менеджера</a>
-    }
-</p> *@
+
 <table class="table">
     <thead>
         <tr>
             <th>Фото</th>
             <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().StructuralUnit)</th>
+            <th>@Html.DisplayNameFor(model => model.First().EnrollmentYear)</th>
             <th>Департамент</th>
             <th>Дії</th>
         </tr>
@@ -34,6 +31,8 @@
                     }
                 </td>
                 <td>@Html.DisplayFor(m => manager.Name)</td>
+                <td>@Html.DisplayFor(m => manager.StructuralUnit)</td>
+                <td>@Html.DisplayFor(m => manager.EnrollmentYear)</td>
                 <td>
                     <a asp-controller="Departments" asp-action="Details" asp-route-id="@manager.Department.Id">
                         @manager.Department.DepartmentName

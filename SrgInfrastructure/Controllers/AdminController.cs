@@ -174,8 +174,8 @@ namespace SrgInfrastructure.Controllers
             {
                 var row = t8.InsertRow();
                 row.Cells[0].Paragraphs[0].Append(mgr.Name, tnr14);
-                row.Cells[1].Paragraphs[0].Append(mgr.Department?.DepartmentName ?? "—", tnr14);
-                row.Cells[2].Paragraphs[0].Append("—", tnr14);
+                row.Cells[1].Paragraphs[0].Append(mgr.Course.ToString(), tnr14);
+                row.Cells[2].Paragraphs[0].Append(mgr.StructuralUnit, tnr14);
                 row.Cells[3].Paragraphs[0].Append("2.5", tnr14);
             }
 
@@ -188,8 +188,10 @@ namespace SrgInfrastructure.Controllers
 
                 var row = t8.InsertRow();
                 row.Cells[0].Paragraphs[0].Append(mem.Name, tnr14);
-                row.Cells[1].Paragraphs[0].Append(mem.Manager?.Department?.DepartmentName ?? "—", tnr14);
-                row.Cells[2].Paragraphs[0].Append((mem.TasksTotal ?? 0).ToString(), tnr14);
+                row.Cells[1].Paragraphs[0].Append(mem.Course.ToString(), tnr14);
+                //row.Cells[1].Paragraphs[0].Append(mem.Manager?.Department?.DepartmentName ?? "—", tnr14);
+                //row.Cells[2].Paragraphs[0].Append((mem.TasksTotal ?? 0).ToString(), tnr14);
+                row.Cells[2].Paragraphs[0].Append(mem.StructuralUnit, tnr14);
                 row.Cells[3].Paragraphs[0].Append(pts.ToString("F1"), tnr14);
             }
 

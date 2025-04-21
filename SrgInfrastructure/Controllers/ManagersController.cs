@@ -71,7 +71,7 @@ namespace SrgInfrastructure.Controllers
             return View(manager);
         }
 
-        // GET: Managers/Create?departmentId=5 – only Managers and Admins.
+        // GET: Managers/Create?departmentId=5
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult Create(int departmentId)
         {
@@ -139,6 +139,8 @@ namespace SrgInfrastructure.Controllers
 
             // 2) Update scalar fields
             mgrToUpdate.Name = manager.Name;
+            mgrToUpdate.StructuralUnit = manager.StructuralUnit;
+            mgrToUpdate.EnrollmentYear = manager.EnrollmentYear;
             mgrToUpdate.DepartmentId = manager.DepartmentId;
 
             // 3) Handle photo upload

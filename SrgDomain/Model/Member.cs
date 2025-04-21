@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SrgDomain.Model;
 
@@ -11,6 +12,12 @@ public partial class Member : Entity
     [Required(ErrorMessage = "Роль обов'язкова")]
     [Display(Name = "Роль")]
     public string Role { get; set; } = null!;
+    [Required(ErrorMessage = "Структурний підрозділ обов'язковий")]
+    [Display(Name = "Структурний підрозділ")]
+    public string StructuralUnit { get; set; } = "";
+    [Required(ErrorMessage = "Рік вступу обов'язковий")]
+    [Display(Name = "Рік вступу")]
+    public int EnrollmentYear { get; set; }
     [Display(Name = "Виконані завдання за місяць")]
     public int? TasksPerMonth { get; set; }
     [Display(Name = "Виконані завдання за весь час")]
@@ -24,4 +31,15 @@ public partial class Member : Entity
     public virtual Manager Manager { get; set; } = null!;
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+
+    [NotMapped]
+    public int Course
+    {
+        get
+        {
+            var now = DateTime.Now;
+            int baseYear = (now.Month < 7 ? now.Year - 1 : now.Year);
+            return (baseYear - EnrollmentYear) + 1;
+        }
+    }
 }
